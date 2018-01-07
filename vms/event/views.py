@@ -24,7 +24,7 @@ from event.services import check_edit_event, get_event_by_id, get_events_by_date
 from job.services import get_jobs_by_event_id
 from volunteer.utils import vol_id_check
 from vms.utils import check_correct_volunteer_shift_sign_up
-
+from cities_light.models import Country
 
 class AdministratorLoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -46,6 +46,11 @@ class EventCreateView(LoginRequiredMixin, AdministratorLoginRequiredMixin,
                       FormView):
     template_name = 'event/create.html'
     form_class = EventForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EventCreateView, self).get_context_data(**kwargs)
+        context['country_list'] = Country.objects.all()
+        return context
 
     def form_valid(self, form):
         start_date = form.cleaned_data['start_date']
@@ -93,12 +98,21 @@ class EventUpdateView(LoginRequiredMixin, AdministratorLoginRequiredMixin,
         event_id = self.kwargs['event_id']
         obj = Event.objects.get(pk=event_id)
         return obj
-
+         
     def get_context_data(self, **kwargs):
         context = super(EventUpdateView, self).get_context_data(**kwargs)
         job_obj = get_jobs_by_event_id(self.kwargs['event_id'])
         context['job_list'] = job_obj.values_list('start_date',
                                                   'end_date').distinct()
+        context['country_list'] = Country.objects.all()
+        event_id = self.kwargs['event_id']
+        event =  get_event_by_id(event_id)
+        context['country'] = event.country
+        context['country_id'] = event.country.pk
+        context['state'] = event.state
+        context['state_id'] = event.state.pk
+        context['city'] = event.city
+        context['city_id'] = event.city.pk
         return context
 
     def post(self, request, *args, **kwargs):
@@ -178,3 +192,4 @@ def list_sign_up(request, volunteer_id):
             'event_list': event_list,
             'volunteer_id': volunteer_id
         })
+
