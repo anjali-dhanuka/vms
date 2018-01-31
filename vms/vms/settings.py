@@ -16,8 +16,6 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: run with debug turned off (DEBUG = False) in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -69,6 +67,7 @@ DATABASES = {
     }
 }
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -81,11 +80,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'debug':
-            DEBUG
         },
     },
 ]
+
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
