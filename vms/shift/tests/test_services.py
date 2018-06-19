@@ -17,8 +17,7 @@ from shift.services import (
     get_unlogged_shifts_by_volunteer_id, get_volunteer_shift_by_id,
     get_volunteer_shifts_with_hours, get_volunteers_by_shift_id,
     get_logged_volunteers_by_shift_id, is_signed_up, register, send_reminder,
-    get_shifts_with_open_slots_for_volunteer, get_volunteer_report,
-    get_administrator_report)
+    get_shifts_with_open_slots_for_volunteer)
 from shift.utils import create_event_with_details, create_job_with_details, create_shift_with_details, clear_objects, get_report_list, create_volunteer_with_details, set_shift_location
 
 
@@ -278,65 +277,6 @@ class ShiftWithVolunteerTest(unittest.TestCase):
 
         self.assertEqual(self.s3.id, open_slots_2[0]["id"])
 
-    def test_get_volunteer_report(self):
-
-        # register volunteer for 2 shifts, log hours for one
-        register(self.v1.id, self.s1.id)
-        register(self.v1.id, self.s3.id)
-
-        start_time = datetime.time(hour=9, minute=0)
-        end_time = datetime.time(hour=10, minute=0)
-        add_shift_hours(self.v1.id, self.s1.id, start_time, end_time)
-
-        report_1 = get_volunteer_report(self.v1.id, self.e1.name, self.j1.name,
-                                        "2012-10-22", "2012-10-30")
-        report_2 = get_volunteer_report(self.v1.id, self.e1.name, self.j2.name,
-                                        "2012-9-1", "2012-10-26")
-
-        # verify that report for logged shift appears
-        self.assertEqual(len(report_1), 1)
-        self.assertEqual(len(report_2), 0)
-        self.assertEqual(self.e1.name, report_1[0]["event_name"])
-        self.assertEqual(self.j1.name, report_1[0]["job_name"])
-
-        # commented out due to bug #327
-        # self.assertEqual(start_time, report_1[0]["logged_start_time"])
-        # self.assertEqual(end_time, report_1[0]["logged_end_time"])
-        # self.assertEqual(1.0, report_1[0]["duration"])
-
-    def test_get_administrator_report(self):
-
-        register(self.v1.id, self.s1.id)
-        register(self.v2.id, self.s3.id)
-
-        start_time = datetime.time(hour=11, minute=0)
-        end_time = datetime.time(hour=12, minute=0)
-        add_shift_hours(self.v1.id, self.s1.id, start_time, end_time)
-        add_shift_hours(self.v2.id, self.s3.id, start_time, end_time)
-
-        report_1 = get_administrator_report(self.v1.first_name, "", "",
-                                            self.e1.name, self.j1.name,
-                                            "2012-10-22", "2012-10-30")
-        report_2 = get_administrator_report(self.v1.first_name, "", "",
-                                            self.e1.name, self.j2.name,
-                                            "2012-9-1", "2012-10-26")
-        report_3 = get_administrator_report("", "", "", self.e1.name,
-                                            self.j2.name, "", "")
-
-        # verify that report for logged shift appears
-        self.assertEqual(len(report_1), 1)
-        self.assertEqual(len(report_2), 0)
-        self.assertEqual(len(report_3), 1)
-        self.assertEqual(self.v1.first_name, report_1[0]["first_name"])
-        self.assertEqual(self.v2.first_name, report_3[0]["first_name"])
-
-        # commented out due to bug #327
-        # self.assertEqual(start_time, report_1[0]["logged_start_time"])
-        # self.assertEqual(start_time, report_3[0]["logged_start_time"])
-        # self.assertEqual(end_time, report_1[0]["logged_end_time"])
-        # self.assertEqual(end_time, report_3[0]["logged_end_time"])
-        # self.assertEqual(1.0, report_1[0]["duration"])
-        # self.assertEqual(1.0, report_3[0]["duration"])
 
     def test_add_shift_hours(self):
         """ Uses shifts s1, s2, s3 and volunteers v1,v2,v3 """

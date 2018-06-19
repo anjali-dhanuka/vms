@@ -2,6 +2,7 @@
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     RegexValidator)
 from django.db import models
+from django.utils import timezone
 
 # local Django
 from job.models import Job
@@ -66,7 +67,6 @@ class Shift(models.Model):
     def __str__(self):
         return '{0} - {1}'.format(self.job.name, self.date)
 
-
 class VolunteerShift(models.Model):
     # Volunteer  to VolunteerShift is a one-to-many relationship
     volunteer = models.ForeignKey(Volunteer)
@@ -75,6 +75,22 @@ class VolunteerShift(models.Model):
     start_time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
     # assigned_by_manager = models.BooleanField()
+    STATUS_CHOICES = ((False, "Not reported"),
+                      (True, "Reported"),)
+    report_status = models.BooleanField(choices=STATUS_CHOICES, default=False)
 
     def __str__(self):
         return '{0} - {1}'.format(self.shift, self.volunteer.first_name)
+
+class Report(models.Model):
+    total_hrs = models.DecimalField(max_digits=20, decimal_places=2)
+    volunteer_shifts = models.ManyToManyField(VolunteerShift)
+    # confirm_status divides reports into three categories namely
+    # pending:0, approved:1 and rejected:2
+    confirm_status = models.IntegerField(default=0)
+    date_submitted = models.DateField(default=timezone.now)
+    volunteer = models.ForeignKey(Volunteer)
+
+    def get_volunteer_shifts(self):
+       return self.volunteer_shifts.all()
+
