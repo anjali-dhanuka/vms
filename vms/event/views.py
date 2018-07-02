@@ -93,11 +93,11 @@ class EventDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         """
-
-
-
-
+        This view shows the information about the event
+        :param self: the event itself
+        :return the object
         """
+
         event_id = self.kwargs['event_id']
         obj = Event.objects.get(pk=event_id)
         return obj
