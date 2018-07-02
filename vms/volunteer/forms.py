@@ -3,9 +3,7 @@ from django import forms
 from django.forms import ModelForm
 
 # local Django
-from event.services import get_events_ordered_by_name
 from volunteer.models import Volunteer
-
 
 class ReportForm(forms.Form):
     event_name = forms.RegexField(

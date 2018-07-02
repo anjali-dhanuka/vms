@@ -89,7 +89,7 @@ def has_resume_file(volunteer_id):
 
 
 def search_volunteers(first_name, last_name, city, state, country,
-                      organization, event_id, job_id):
+                      organization, event, job):
     """Volunteers search
     None, one, or more parameters may be sent:
     first_name, last_name, city, state, country, organization, event, job
@@ -97,7 +97,7 @@ def search_volunteers(first_name, last_name, city, state, country,
     If no search parameters are given, it returns all volunteers
 
     Examples:
-    search_volunteers(None, None, None, None, None, None)
+    search_volunteers(None, None, None, None, None, None, None, None))
     will return all volunteers
     search_volunteers("Yoshi", None, None, None, None, None)
     will return all volunteers with the first name "Yoshi"
@@ -138,15 +138,9 @@ def search_volunteers(first_name, last_name, city, state, country,
             search_query = search_query.exclude(
                 unlisted_organization__exact='').filter(
                     unlisted_organization__icontains=organization)
-    if event_id:
-        try:
-            search_query = search_query.filter(shift__job__event_id=event_id)
-        except:
-            search_query = None
-    if job_id:
-        try:
-            search_query = search_query.filter(shift__job_id=job_id)
-        except:
-            search_query = None
+    if event:
+        search_query = search_query.filter(shift__job__event__name__icontains=event)
+    if job:
+        search_query = search_query.filter(shift__job__name__icontains=job)
     return search_query
 
