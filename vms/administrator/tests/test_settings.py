@@ -162,6 +162,21 @@ class Settings(LiveServerTestCase):
         self.assertEqual(settings.remove_i18n(self.driver.current_url), self.live_server_url + settings.event_list_page)
         self.assertEqual(settings.get_event_name(), 'event-name')
 
+    def test_details_event(self):
+        event = ['event-name', '2050-08-21', '2050-09-28']
+        created_event = create_event_with_details(event)
+         
+        self.settings.go_to_events_page()
+        settings = self.settings
+        settings.live_server_url = self.live_server_url
+
+        # Create event
+        settings.navigate_to_event_list_view()
+        self.assertEqual(settings.get_event_name(), created_event.name)
+       
+        settings.go_to_details_event_page() 
+
+
     def test_edit_event(self):
         event = ['event-name', '2050-08-21', '2050-09-28']
         created_event = create_event_with_details(event)
