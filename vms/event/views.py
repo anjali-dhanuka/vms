@@ -84,9 +84,20 @@ class EventDeleteView(LoginRequiredMixin, AdministratorLoginRequiredMixin,
 
 
 class EventDetailView(LoginRequiredMixin, DetailView):
+    """
+    The view to show the details of an Event
+    Extends DetailView which is a generic class based view designed to display data.
+    """
+
     template_name = 'event/details.html'
 
     def get_object(self, queryset=None):
+        """
+
+
+
+
+        """
         event_id = self.kwargs['event_id']
         obj = Event.objects.get(pk=event_id)
         return obj
