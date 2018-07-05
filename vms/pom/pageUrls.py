@@ -15,6 +15,7 @@ class PageUrls(object):
     volunteer_report_page = '/volunteer/report/'
     volunteer_registration_page = '/registration/signup_volunteer/'
     volunteer_search_page = '/volunteer/search/'
+    event_search_page = '/event/search/'
     manage_volunteer_shift_page = '/shift/volunteer_search/'
     upcoming_shifts_page = '/shift/view_volunteer_shifts/'
     completed_shifts_page = '/shift/view_hours/'

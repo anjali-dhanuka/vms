@@ -18,7 +18,7 @@ from django.views.generic.edit import DeleteView
 
 # local Django
 from administrator.utils import admin_required
-from event.forms import EventForm, EventDateForm, SearchEventForm
+from event.forms import EventForm, SearchEventForm
 from event.models import Event
 from event.services import check_edit_event, get_event_by_id, get_events_by_date, get_events_ordered_by_name, remove_empty_events_for_volunteer, search_events
 from job.services import get_jobs_by_event_id, get_jobs_ordered_by_title
@@ -146,26 +146,30 @@ class EventUpdateView(LoginRequiredMixin, AdministratorLoginRequiredMixin,
 @vol_id_check
 def list_sign_up(request, volunteer_id):
     if request.method == 'POST':
-        form = EventDateForm(request.POST)
+        form = SearchEventForm(request.POST)
         if form.is_valid():
+            name = form.cleaned_data['name']
             start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date']
-            event_list = get_events_by_date(start_date, end_date)
-            event_list = remove_empty_events_for_volunteer(
-                event_list, volunteer_id)
+            end_date = form.cleaned_data['end_date'] 
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            country = form.cleaned_data['country']
+            job_id = form.cleaned_data['job']
+            search_result_list = search_events(
+                name, start_date, end_date, city, state, country, job_id)
+            event_list = remove_empty_events_for_volunteer(search_result_list, volunteer_id)
             return render(
                 request, 'event/list_sign_up.html', {
                     'form': form,
                     'event_list': event_list,
-                    'volunteer_id': volunteer_id
+                    'volunteer_id': volunteer_id,
+                    'has_searched': True
                 })
     else:
-        event_list = get_events_ordered_by_name()
-        event_list = remove_empty_events_for_volunteer(event_list,
-                                                       volunteer_id)
+        form = SearchEventForm()
         return render(request, 'event/list_sign_up.html', {
-            'event_list': event_list,
-            'volunteer_id': volunteer_id
+            'volunteer_id': volunteer_id,
+            'has_searched': False
         })
 
 
