@@ -13,7 +13,6 @@ from event.services import get_events_by_date
 from pom.pages.authenticationPage import AuthenticationPage
 from pom.pages.eventSearchPage import EventSearchPage
 from shift.utils import (create_admin, create_volunteer_with_details,  create_organization_with_details, create_event_with_details, create_job_with_details, create_shift_with_details)
-import ipdb
 
 class SearchEvent(LiveServerTestCase):
     """
@@ -91,7 +90,7 @@ class SearchEvent(LiveServerTestCase):
         search_page.search_name_field('event')
         search_page.submit_form()
         search_results = search_page.get_search_results()
-        result = search_page.get_results_list(search_results) 
+        result = search_page.get_results_list(search_results)
         self.assertEqual(len(result), 2)
 
         self.assertTrue(expected_result_one in result)
@@ -151,18 +150,18 @@ class SearchEvent(LiveServerTestCase):
                                 'Unable to locate element: //table//tbody',
                                 search_page.get_search_results)
 
-        # search filling end date only 
+        # search filling end date only
         search_page.navigate_to_event_search_page()
         search_page.search_end_date_field('02/15/2015')
         search_page.submit_form()
         search_results = search_page.get_search_results()
         result = search_page.get_results_list(search_results)
-        
+
         self.assertEqual(len(result), 2)
         self.assertTrue(expected_result_two in result)
         self.assertTrue(expected_result_one in result)
 
-        # search filling both start and end date 
+        # search filling both start and end date
         search_page.navigate_to_event_search_page()
         search_page.search_start_date_field('01/01/2015')
         search_page.search_end_date_field('01/15/2015')
@@ -193,7 +192,7 @@ class SearchEvent(LiveServerTestCase):
 
         expected_result_one = ['event-name', 'Jan.', '1,', '2015', 'March', '1,', '2015', 'event-city', 'Edit', 'Delete']
         expected_result_two = ['event-nameq', 'Feb.', '1,', '2015', 'April', '1,', '2015', 'event-cityq', 'Edit', 'Delete']
-        
+
         search_page.search_city_field('event')
         search_page.submit_form()
         search_results = search_page.get_search_results()
@@ -248,7 +247,7 @@ class SearchEvent(LiveServerTestCase):
 
         expected_result_one = ['event-name', 'Jan.', '1,', '2015', 'March', '1,', '2015', 'None', 'Edit', 'Delete']
         expected_result_two = ['event-nameq', 'Feb.', '1,', '2015', 'April', '1,', '2015', 'None', 'Edit', 'Delete']
-        
+
         search_page.search_state_field('event')
         search_page.submit_form()
         search_results = search_page.get_search_results()
@@ -365,7 +364,7 @@ class SearchEvent(LiveServerTestCase):
         self.assertEqual(len(result), 1)
         self.assertTrue(expected_result_one in result)
 
-        # search job_2 
+        # search job_2
         search_page.navigate_to_event_search_page()
         search_page.search_job_field(job_2.id)
         search_results = search_page.get_search_results()

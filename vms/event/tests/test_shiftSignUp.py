@@ -192,14 +192,14 @@ class ShiftSignUp(LiveServerTestCase):
 
         sign_up_page = self.sign_up_page
         sign_up_page.live_server_url = self.live_server_url
-       
-        # Enter name of the event 
+
+        # Enter name of the event
         sign_up_page.go_to_sign_up_page()
         parameters = ['event', '', '', '', '', '']
-        sign_up_page.fill_search_form(name)
+        sign_up_page.fill_search_form(parameters)
         # Verify that the event shows up
-        self.assertEqual(sign_up_page.get_event_name(), 'event')     
-    
+        self.assertEqual(sign_up_page.get_event_name(), 'event')
+
     def test_search_event_both_date_present(self):
         register_event_utility()
         register_job_utility()
@@ -211,7 +211,7 @@ class ShiftSignUp(LiveServerTestCase):
         # Enter date range in which an event starts
         sign_up_page.go_to_sign_up_page()
         parameters = ['', '05/08/2050', '05/31/2050', '', '', '']
-        sign_up_page.fill_search_form(date)
+        sign_up_page.fill_search_form(parameters)
         # Verify that the event shows up
         self.assertEqual(sign_up_page.get_event_name(), 'event')
 
@@ -223,9 +223,9 @@ class ShiftSignUp(LiveServerTestCase):
         sign_up_page = self.sign_up_page
         sign_up_page.live_server_url = self.live_server_url
         # Enter only correct starting date
-        sign_up_page.go_to_sign_up_page() 
+        sign_up_page.go_to_sign_up_page()
         parameters = ['', '05/08/2050', '', '', '', '']
-        sign_up_page.fill_search_form(date)
+        sign_up_page.fill_search_form(parameters)
         # Verify that the event shows up
         self.assertEqual(sign_up_page.get_event_name(), 'event')
 

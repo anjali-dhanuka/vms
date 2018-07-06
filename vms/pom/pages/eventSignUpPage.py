@@ -53,7 +53,7 @@ class EventSignUpPage(BasePage):
         self.element_by_id(self.elements.START_DATE_FROM).clear()
         self.element_by_id(self.elements.START_DATE_TO).clear() 
         self.element_by_id(self.elements.EVENT_CITY).clear()
-        self.element_by_id(self.elements.EVENT_STATE.clear()	
+        self.element_by_id(self.elements.EVENT_STATE).clear()	
         self.element_by_id(self.elements.EVENT_COUNTRY).clear()
 
         self.send_value_to_element_id(self.elements.EVENT_NAME, parameters[0])

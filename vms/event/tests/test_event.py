@@ -122,6 +122,7 @@ class EventDetails(LiveServerTestCase):
 
         edit_job = ['newevent', '2050-06-12', '2050-06-20']
         event_details_page.go_to_edit_event_page()
+        a = input()
         event_details_page.fill_event_form(edit_job)
         event_details_page.navigate_to_event_list_view()
 
