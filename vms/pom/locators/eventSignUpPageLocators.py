@@ -16,7 +16,7 @@ class EventSignUpPageLocators(object):
     EVENT_NAME = 'name'
     EVENT_CITY = 'city'
     EVENT_STATE = 'state'
-    EVENT_COUNTRY = 'country'    
+    EVENT_COUNTRY = 'country'
 
     # Two choices depending on whether volunteer or admin
     ASSIGN_SHIFTS_PATH = '//table//tbody//tr[1]//td[4]'

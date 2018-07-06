@@ -9,10 +9,9 @@ from selenium.webdriver.common.by import By
 from django.contrib.staticfiles.testing import LiveServerTestCase
 
 # local Django
-from event.services import get_events_by_date
 from pom.pages.authenticationPage import AuthenticationPage
 from pom.pages.eventSearchPage import EventSearchPage
-from shift.utils import (create_admin, create_volunteer_with_details,  create_organization_with_details, create_event_with_details, create_job_with_details, create_shift_with_details)
+from shift.utils import (create_admin, create_event_with_details, create_job_with_details)
 
 class SearchEvent(LiveServerTestCase):
     """

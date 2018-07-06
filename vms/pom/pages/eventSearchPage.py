@@ -2,10 +2,9 @@
 from pom.pages.basePage import BasePage
 
 # local Django
-from pom.locators.eventSearchPageLocators import EventSearchPageLocators 
+from pom.locators.eventSearchPageLocators import EventSearchPageLocators
 from pom.pages.authenticationPage import AuthenticationPage
 from pom.pageUrls import PageUrls
-import ipdb
 
 class EventSearchPage(BasePage):
 
