@@ -193,7 +193,6 @@ def search(request):
                 request, 'event/list.html', {
                     'jobs_list': jobs_list,
                     'form': form,
-                    'has_searched': True,
                     'search_result_list': search_result_list
                 })
     else:
@@ -202,6 +201,6 @@ def search(request):
     return render(
         request, 'event/list.html', {
             'jobs_list': jobs_list,
-            'form': form,
-            'has_searched': False,
+            'form': form, 
+            'search_result_list': search_result_list
         })
