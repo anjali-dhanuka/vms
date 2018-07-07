@@ -20,10 +20,11 @@ from django.views.generic.edit import DeleteView
 from administrator.utils import admin_required
 from event.forms import EventForm, SearchEventForm
 from event.models import Event
-from event.services import check_edit_event, get_event_by_id, get_events_by_date, get_events_ordered_by_name, remove_empty_events_for_volunteer, search_events
+from event.services import check_edit_event, get_event_by_id, get_events_ordered_by_name, remove_empty_events_for_volunteer, search_events
 from job.services import get_jobs_by_event_id, get_jobs_ordered_by_title
 from volunteer.utils import vol_id_check
 from vms.utils import check_correct_volunteer_shift_sign_up
+import ipdb
 
 class AdministratorLoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -150,7 +151,7 @@ def list_sign_up(request, volunteer_id):
         if form.is_valid():
             name = form.cleaned_data['name']
             start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date'] 
+            end_date = form.cleaned_data['end_date']
             city = form.cleaned_data['city']
             state = form.cleaned_data['state']
             country = form.cleaned_data['country']
@@ -177,6 +178,7 @@ def list_sign_up(request, volunteer_id):
 @admin_required
 def search(request):
     jobs_list = get_jobs_ordered_by_title()
+    search_result_list = get_events_ordered_by_name() 
     if request.method == 'POST':
         form = SearchEventForm(request.POST)
         if form.is_valid():
@@ -201,6 +203,6 @@ def search(request):
     return render(
         request, 'event/list.html', {
             'jobs_list': jobs_list,
-            'form': form, 
+            'form': form,
             'search_result_list': search_result_list
         })
