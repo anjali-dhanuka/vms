@@ -357,7 +357,7 @@ class SearchEvent(LiveServerTestCase):
         job_2 = create_job_with_details(job)
 
         # search job_1
-        search_page.search_job_field(job_1.id)
+        search_page.search_job_field("job-name")
         search_results = search_page.get_search_results()
         result = search_page.get_results_list(search_results)
         self.assertEqual(len(result), 1)
@@ -365,7 +365,7 @@ class SearchEvent(LiveServerTestCase):
 
         # search job_2
         search_page.navigate_to_event_search_page()
-        search_page.search_job_field(job_2.id)
+        search_page.search_job_field("job-nameq")
         search_results = search_page.get_search_results()
         result = search_page.get_results_list(search_results)
         self.assertEqual(len(result), 1)
@@ -393,7 +393,7 @@ class SearchEvent(LiveServerTestCase):
         event_2.state = 'event-stateq'
         event_2.city = 'event-cityq'
         event_2.save()
-        job = ['job-name', '2015-02-02', '2015-02-15', 'job-description', event_2]
+        job = ['job-nameq', '2015-02-02', '2015-02-15', 'job-description', event_2]
         job_2 = create_job_with_details(job)
 
 
@@ -406,6 +406,7 @@ class SearchEvent(LiveServerTestCase):
         search_page.search_end_date_field('2015-04-01')
         search_page.search_state_field('event')
         search_page.search_country_field('event')
+        search_page.search_job_field('job')
         search_page.submit_form()
         search_results = search_page.get_search_results()
         result = search_page.get_results_list(search_results)

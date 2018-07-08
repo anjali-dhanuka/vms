@@ -266,7 +266,7 @@ class EventWithJobTests(unittest.TestCase):
 
         # test no search matches
         search_list = search_events("Billy", "2015-07-25", "2015-08-08", "Quebec",
-                                        "Canada", "Ubisoft", j2.id)
+                                        "Canada", "Ubisoft", "abc")
         self.assertEqual(len(search_list), 0)
         self.assertNotIn(self.e1, search_list)
         self.assertNotIn(self.e2, search_list)

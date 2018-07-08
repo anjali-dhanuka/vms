@@ -154,29 +154,25 @@ def list_sign_up(request, volunteer_id):
             city = form.cleaned_data['city']
             state = form.cleaned_data['state']
             country = form.cleaned_data['country']
-            job_id = form.cleaned_data['job']
-            search_result_list = search_events(
-                name, start_date, end_date, city, state, country, job_id)
-            event_list = remove_empty_events_for_volunteer(search_result_list, volunteer_id)
-            return render(
+            job = form.cleaned_data['job']
+            search_result_list = search_events(name, start_date, end_date, city, state, country, job)
+    else:
+        form = SearchEventForm()
+        search_result_list = get_events_ordered_by_name()
+    event_list = remove_empty_events_for_volunteer(search_result_list,
+                                                   volunteer_id)
+    return render(
                 request, 'event/list_sign_up.html', {
                     'form': form,
                     'event_list': event_list,
                     'volunteer_id': volunteer_id,
-                    'has_searched': True
                 })
-    else:
-        form = SearchEventForm()
-        return render(request, 'event/list_sign_up.html', {
-            'volunteer_id': volunteer_id,
-            'has_searched': False
-        })
 
 
 @login_required
 @admin_required
 def search(request):
-    search_result_list = get_events_ordered_by_name() 
+    search_result_list = get_events_ordered_by_name()
     if request.method == 'POST':
         form = SearchEventForm(request.POST)
         if form.is_valid():
