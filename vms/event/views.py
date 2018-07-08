@@ -24,7 +24,6 @@ from event.services import check_edit_event, get_event_by_id, get_events_ordered
 from job.services import get_jobs_by_event_id, get_jobs_ordered_by_title
 from volunteer.utils import vol_id_check
 from vms.utils import check_correct_volunteer_shift_sign_up
-import ipdb
 
 class AdministratorLoginRequiredMixin(object):
     @method_decorator(login_required)
@@ -177,7 +176,6 @@ def list_sign_up(request, volunteer_id):
 @login_required
 @admin_required
 def search(request):
-    jobs_list = get_jobs_ordered_by_title()
     search_result_list = get_events_ordered_by_name() 
     if request.method == 'POST':
         form = SearchEventForm(request.POST)
@@ -188,21 +186,14 @@ def search(request):
             city = form.cleaned_data['city']
             state = form.cleaned_data['state']
             country = form.cleaned_data['country']
-            job_id = form.cleaned_data['job']
+            job = form.cleaned_data['job']
             search_result_list = search_events(
-                name, start_date, end_date, city, state, country, job_id)
-            return render(
-                request, 'event/list.html', {
-                    'jobs_list': jobs_list,
-                    'form': form,
-                    'search_result_list': search_result_list
-                })
+                name, start_date, end_date, city, state, country, job)
     else:
         form = SearchEventForm()
 
     return render(
         request, 'event/list.html', {
-            'jobs_list': jobs_list,
             'form': form,
             'search_result_list': search_result_list
         })

@@ -165,7 +165,7 @@ def remove_empty_events_for_volunteer(event_list, volunteer_id):
     return new_event_list
 
 
-def search_events(name, start_date, end_date, city, state, country, job_id):
+def search_events(name, start_date, end_date, city, state, country, job):
     search_query = Event.objects.all()
     if name:
         search_query = search_query.filter(name__icontains=name)
@@ -177,9 +177,8 @@ def search_events(name, start_date, end_date, city, state, country, job_id):
         search_query = search_query.filter(state__icontains=state)
     if country:
         search_query = search_query.filter(country__icontains=country)
-    if job_id:
-        job_obj = get_job_by_id(job_id)
-        search_query = search_query.filter(job=job_obj)
+    if job:
+        search_query = search_query.filter(job__name__icontains=job)
     return search_query
 
 
