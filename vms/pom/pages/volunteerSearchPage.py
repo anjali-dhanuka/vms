@@ -63,3 +63,6 @@ class VolunteerSearchPage(BasePage):
             result.append(row)
 
         return result
+
+    def get_shift_summary(self):
+        return self.element_by_xpath(self.elements.TOTAL_SHIFTS).text
