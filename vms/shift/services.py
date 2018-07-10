@@ -1,5 +1,6 @@
 # standard library
 import datetime
+from datetime import date
 
 # Django
 from django.core.exceptions import ObjectDoesNotExist
@@ -81,7 +82,6 @@ def get_report_by_id(report_id):
         result = report
 
     return result
-
 
 def send_reminder():
     """
@@ -342,7 +342,8 @@ def get_volunteer_shift_by_id(v_id, s_id):
 def get_volunteer_shifts(v_id, event_name, job_name, start_date, end_date):
 
     volunteer_shift_list = get_volunteer_shifts_with_hours(v_id)
-    volunteer_shift_list = volunteer_shift_list.filter(report_status=False)
+    volunteer_shift_list = volunteer_shift_list.filter(Q(report_status=False)&Q(shift__date__gte=timezone.now().date())|
+                                                Q(shift__date=timezone.now().date(), shift__end_time__lte=timezone.now().time()))
     # filter based on criteria provided
     if event_name:
         volunteer_shift_list = volunteer_shift_list.filter(
@@ -363,9 +364,7 @@ def get_volunteer_shifts(v_id, event_name, job_name, start_date, end_date):
 def get_volunteer_shifts_with_hours(v_id):
 
     # get shifts that the volunteer is signed up for
-    volunteer_shift_list = VolunteerShift.objects.filter(volunteer_id=v_id,
-                                                         shift__date__lte=timezone.now(),
-                                                         shift__end_time__lte=timezone.now())
+    volunteer_shift_list = VolunteerShift.objects.filter(volunteer_id=v_id)
 
     # get shifts that have logged hours only
     volunteer_shift_list = volunteer_shift_list.filter(

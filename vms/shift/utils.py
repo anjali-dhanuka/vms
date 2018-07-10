@@ -8,10 +8,10 @@ from django.contrib.auth.models import User
 from administrator.models import Administrator
 from event.models import Event
 from job.models import Job
-from shift.models import Shift, VolunteerShift
+from shift.models import Shift, VolunteerShift, Report
+from shift.services import calculate_duration
 from volunteer.models import Volunteer
 from organization.models import Organization
-
 
 # Contains common functions which need to be frequently called by tests
 
@@ -38,6 +38,14 @@ def create_event_with_details(event):
     e1 = Event(name=event[0], start_date=event[1], end_date=event[2])
     e1.save()
     return e1
+
+
+def create_report_with_details(vol, logged_shift):
+     total_hours = calculate_duration(logged_shift.start_time, logged_shift.end_time)
+     r1 = Report.objects.create(volunteer=vol, total_hrs=total_hours)
+     r1.volunteer_shifts.add(logged_shift)
+     r1.save()
+     return r1
 
 
 def create_job_with_details(job):
@@ -229,6 +237,11 @@ def register_event_utility():
 
     return event
 
+def register_past_event_utility():
+    event = Event.objects.create(
+        name='event', start_date='2015-05-10', end_date='2015-06-16')
+
+    return event
 
 def register_job_utility():
     job = Job.objects.create(
@@ -240,6 +253,15 @@ def register_job_utility():
     return job
 
 
+def register_past_job_utility():
+    job = Job.objects.create(
+        name='job',
+        start_date='2015-05-10',
+        end_date='2015-06-15',
+        event=Event.objects.get(name='event'))
+
+    return job
+
 def register_shift_utility():
     shift = Shift.objects.create(
         date='2050-06-15',
@@ -250,6 +272,15 @@ def register_shift_utility():
 
     return shift
 
+def register_past_shift_utility():
+    shift = Shift.objects.create(
+        date='2015-06-15',
+        start_time='09:00',
+        end_time='15:00',
+        max_volunteers='6',
+        job=Job.objects.get(name='job'))
+
+    return shift
 
 def register_volunteer_for_shift_utility(shift, volunteer):
     vol_shift = VolunteerShift.objects.create(shift=shift, volunteer=volunteer)
