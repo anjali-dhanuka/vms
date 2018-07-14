@@ -9,10 +9,23 @@ class EventSignUpPageLocators(object):
     EVENT_NAME = '//table//tbody//tr[1]//td[1]'
     UPCOMING_SHIFT_SECTION = 'html/body/div[2]/h3'
     SLOTS_REMAINING_PATH = '//table//tbody//tr[1]//td[5]'
+    EVENT_JOB_NAME = '//table//tbody//tr[1]//td[1]'
+
 
     # search form locators
     START_DATE_FROM = 'from'
     START_DATE_TO = 'to'
+
+
+    # search from locators for job
+    SEARCH_JOB_NAME = 'job_name'
+    JOB_START_DATE_FROM = 'job_from'
+    JOB_START_DATE_TO = 'job_to'
+    JOB_CITY = 'job_city'
+    JOB_STATE = 'job_state'
+    JOB_COUNTRY = 'job_country'
+    SEARCH_JOB_SUBMIT_PATH = 'submit_job'
+
 
     # Two choices depending on whether volunteer or admin
     ASSIGN_SHIFTS_PATH = '//table//tbody//tr[1]//td[4]'
