@@ -48,7 +48,7 @@ def setUpModule():
     shift_1 = ["2012-10-28", "9:00", "15:00", 1, j1]
     shift_2 = ["2012-10-25", "10:00", "16:00", 2, j1]
     shift_3 = ["2012-10-22", "10:00", "16:00", 4, j2]
-    shift_4 = ["2050-10-28", "9:00", "15:00", 1, j1]
+    
     s1 = create_shift_with_details(shift_1)
     s2 = create_shift_with_details(shift_2)
     s3 = create_shift_with_details(shift_3)
