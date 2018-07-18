@@ -342,7 +342,8 @@ def get_volunteer_shift_by_id(v_id, s_id):
 def get_volunteer_shifts(v_id, event_name, job_name, start_date, end_date):
 
     volunteer_shift_list = get_volunteer_shifts_with_hours(v_id)
-    volunteer_shift_list = volunteer_shift_list.filter(report_status=False, end_time__lte=timezone.now())
+    volunteer_shift_list = volunteer_shift_list.filter(Q(report_status=False)&Q(shift__date__gte=timezone.now().date())|
+                                                Q(shift__date=timezone.now().date(), shift__end_time__lte=timezone.now().time()))
     # filter based on criteria provided
     if event_name:
         volunteer_shift_list = volunteer_shift_list.filter(
