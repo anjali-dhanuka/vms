@@ -5,6 +5,7 @@ from datetime import date, timedelta
 
 # Django
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 # local Django
 from shift.models import VolunteerShift
