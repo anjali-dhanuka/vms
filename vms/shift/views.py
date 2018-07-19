@@ -879,3 +879,4 @@ def view_volunteers(request, shift_id):
                 raise Http404
         else:
             raise Http404
+
