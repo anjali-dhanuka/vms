@@ -23,3 +23,4 @@ class EditRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(EditRequest, EditRequestAdmin)
+
