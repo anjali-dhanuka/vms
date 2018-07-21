@@ -136,7 +136,7 @@ class Settings(LiveServerTestCase):
         settings = self.settings
         settings.click_link(settings.jobs_tab)
         self.assertEqual(settings.remove_i18n(self.driver.current_url), self.live_server_url + settings.job_list_page)
-        self.assertEqual(settings.get_message_context(), 'There are currently no jobs. Please create jobs first.')
+        self.assertEqual(settings.get_message_context(), 'No job found.')
         settings.click_link('Create Job')
         self.assertEqual(settings.remove_i18n(self.driver.current_url), self.live_server_url + settings.create_job_page)
         self.assertEqual(settings.get_message_context(), 'Please add events to associate with jobs first.')
@@ -146,7 +146,7 @@ class Settings(LiveServerTestCase):
         settings = self.settings
         settings.click_link(settings.shift_tab)
         self.assertEqual(settings.remove_i18n(self.driver.current_url), self.live_server_url + settings.shift_list_page)
-        self.assertEqual(settings.get_message_context(), 'There are currently no jobs. Please create jobs first.')
+        self.assertEqual(settings.get_message_context(), 'No job found.')
 
     def test_create_event(self):
         self.settings.go_to_events_page()
