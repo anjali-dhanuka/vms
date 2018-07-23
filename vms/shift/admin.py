@@ -18,6 +18,7 @@ class VolunteerShiftAdmin(admin.ModelAdmin):
 
 admin.site.register(VolunteerShift, VolunteerShiftAdmin)
 
+
 class EditRequestAdmin(admin.ModelAdmin):
     pass
 

@@ -755,7 +755,7 @@ class ViewHoursView(LoginRequiredMixin, FormView, TemplateView):
         context['volunteer'] = get_volunteer_by_id(volunteer_id)
         context['volunteer_shift_list'] = get_volunteer_shifts_with_hours(
             volunteer_id)
-        context['last_date'] = timezone.now()
+        context['init_date'] = timezone.now()-timedelta(days=7)
         return context
 
 
