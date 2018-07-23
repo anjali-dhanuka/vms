@@ -128,7 +128,7 @@ class ShiftHours(LiveServerTestCase):
 
         completed_shifts_page.edit_hours('10:00', '13:00')
         mail.outbox = []
-        mail.send_mail("Edit Request", "message", "messanger@locahost.com", "admin@admin.com" )
+        mail.send_mail("Edit Request", "message", "messanger@locahost.com", ["admin@admin.com"] )
         self.assertEqual(len(mail.outbox), 1)
         msg = mail.outbox[0]
         self.assertEqual(msg.subject, "Edit Request")
