@@ -1,5 +1,5 @@
 # standard library
-from datetime import date
+from datetime import date, timedelta
 from django.utils import timezone
 
 # third party
