@@ -23,6 +23,7 @@ from shift.utils import (create_admin, create_volunteer,
                          register_past_event_utility, register_past_job_utility, register_past_shift_utility,
                          create_report_with_details, create_volunteer_with_details)
 
+
 class Report(LiveServerTestCase):
 
     @classmethod
@@ -150,3 +151,16 @@ class Report(LiveServerTestCase):
         self.assertEqual(report_page.remove_i18n(self.driver.current_url), self.live_server_url + report_page.administrator_report_page)
         with self.assertRaises(NoSuchElementException):
             report_page.get_report()
+
+    def test_email_on_report_approval(self):
+        vol = create_volunteer()
+        register_past_event_utility()
+        register_past_job_utility()
+        shift = register_past_shift_utility()
+        start=datetime.time(hour=10, minute=0)
+        end=datetime.time(hour=11, minute=0)
+        logged_shift = log_hours_with_details(vol, shift, start, end)
+        report = create_report_with_details(vol, logged_shift)
+        response = self.client.get('/administrator/report/approve/%s'%report.id)
+        self.assertEqual(response.status_code, 302)
+

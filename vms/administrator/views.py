@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -66,12 +67,18 @@ def approve(request, report_id):
    admin = Administrator.objects.get(user=request.user)
    volunteer_shift_list = report.volunteer_shifts.all()
    report_list = generate_report(volunteer_shift_list)
+   volunteer = report.volunteer
    post_pdf = render_to_pdf('administrator/pdf.html',
         {'report': report,
        'admin': admin,
        'report_list': report_list,},
    )
-   msg = EmailMessage("Report Approved", "Your report has been approved.", "messanger@localhost.com", [report.volunteer.email])
+   message = render_to_string('administrator/confirm_report.html',
+                              {
+                              'volunteer': volunteer,
+                              'admin': admin,
+                              })
+   msg = EmailMessage("Report Approved", message, "messanger@localhost.com", [report.volunteer.email])
    msg.attach('file.pdf', post_pdf, 'application/pdf')
    msg.send()
    return HttpResponseRedirect('/administrator/report')
