@@ -14,6 +14,7 @@ from django.views.generic import View
 from django.views.generic.edit import FormView, UpdateView
 from easy_pdf.rendering import render_to_pdf
 from django.core.mail.message import EmailMessage
+from django.core.mail import send_mail
 
 # local Django
 from administrator.forms import ReportForm, AdministratorForm
@@ -52,6 +53,14 @@ def reject(request, report_id):
    report = get_report_by_id(report_id)
    report.confirm_status = 2
    report.save()
+   volunteer = report.volunteer
+   admin = Administrator.objects.get(user=request.user)
+   message = render_to_string('administrator/confirm_report.html',
+                              {
+                              'volunteer': volunteer,
+                              'admin': admin,
+                              })
+   send_mail("Report Rejected", message, "messanger@localhost.com", [volunteer.email])
    return HttpResponseRedirect('/administrator/report')
 
 def approve(request, report_id):
